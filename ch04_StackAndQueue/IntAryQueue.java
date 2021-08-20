@@ -88,8 +88,12 @@ public class IntAryQueue {
 
     //큐의 front->rear 순으로 출력
     public void dump() {
-        for (int i=0; i<num; i++)
-            System.out.print(que[i] + " ");
-        System.out.println();
+        if(num<=0)
+            System.out.println("큐가 비어있습니다.");
+        else{
+            for (int i=0; i<num; i++)
+                System.out.print(que[i] + " ");
+            System.out.println();
+        }
     }
 }

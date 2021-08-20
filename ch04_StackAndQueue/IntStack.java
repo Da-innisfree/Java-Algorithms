@@ -47,7 +47,7 @@ public class IntStack {
         return stk[ptr -1];
     }
 
-    //스택에서 x를 찾아 인덱스(없으면 -1)를 반환
+    //스택에서 x를 찾아 인덱스(없으면 -1)를 반환(팝하는 순서대로 검색)
     public int indexOf(int x){
         for(int i= ptr-1; i>=0; i--)
             if(stk[i]==x)
