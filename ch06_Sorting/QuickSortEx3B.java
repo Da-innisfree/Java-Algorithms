@@ -4,8 +4,20 @@ import ch04_StackAndQueue.IntStack;
 
 import java.util.Scanner;
 
-//퀵 정렬(비재귀 버전, 요소의 개수가 적은 그룹을 먼저 나누기(요소가 9개 이하이면 insertionSort))
-public class QuickSortEx2B {
+//퀵 정렬(비재귀 버전, 피벗 선택하기 방법 1/ 요소의 개수가 적은 그룹을 먼저 나누기(요소가 9개 이하이면 insertionSort))
+public class QuickSortEx3B {
+    //3개 중에 중앙값을 피벗으로 선택합니다.
+    static int med3(int a, int b, int c) {
+        if (a >= b)
+            if (b >= c) return b;
+            else if (a <= c) return a;
+            else return c;
+
+        else if (a > c) return a;
+        else if (b > c) return c;
+        else return b;
+    }
+
     //a[idx1]와 a[idx2]의 값을 바꿉니다.
     static void swap(int[] a, int idx1, int idx2) {
         int t = a[idx1];
@@ -28,6 +40,7 @@ public class QuickSortEx2B {
 
     //퀵 정렬(비재귀 버전, 요소의 개수가 적은 그룹을 먼저 나누기(요소가 9개 이하이면 insertionSort))
     static void quickSort(int[] a, int left, int right) {
+
         //스택 생성
         IntStack lstack = new IntStack(right - left + 1); //right-left+1 => 나눌 배열의 요솟수
         IntStack rstack = new IntStack(right - left + 1);
@@ -42,7 +55,7 @@ public class QuickSortEx2B {
             //요솟수가 9개 이하일 경우
             if (right - left <= 9) insertionSort(a, left, right);
             else {
-                int x = a[(left + right) / 2]; //피벗
+                int x = med3(a[left], a[(left + right) / 2], a[right]); //피벗
 
                 do {
                     while (a[pl] < x) pl++;

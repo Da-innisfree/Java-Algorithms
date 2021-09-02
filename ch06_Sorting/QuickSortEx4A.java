@@ -2,8 +2,8 @@ package ch06_Sorting;
 
 import java.util.Scanner;
 
-//퀵 정렬(재귀버전, 배열을 나누는 과정을 출력합니다./요소의 개수가 적은 그룹을 먼저 나누기(요소가 9개 이하이면 insertionSort)
-public class QuickSortEx2A {
+public class QuickSortEx4A {
+
     //a[idx1]와 a[idx2]의 값을 바꿉니다.
     static void swap(int[] a, int idx1, int idx2) {
         int t = a[idx1];
@@ -11,9 +11,17 @@ public class QuickSortEx2A {
         a[idx2] = t;
     }
 
+    //a[idx1], a[idx2], a[idx3]의 값을 비교해 중앙값 인덱스 리턴합니다.
+    static int sort3(int[] a, int idx1, int idx2, int idx3) {
+        if (a[idx1] > a[idx2]) swap(a, idx1, idx2);
+        if (a[idx2] > a[idx3]) swap(a, idx2, idx3);
+        if (a[idx1] > a[idx2]) swap(a, idx1, idx2);
+        return idx2;
+    }
+
     //단순 삽입 정렬
-    static void insertionSort(int[] a, int left,int right) {
-        for (int i = left+1; i <= right; i++) {
+    static void insertionSort(int[] a, int left, int right) {
+        for (int i = left + 1; i <= right; i++) {
             int j;
             int tmp = a[i];
             //a[j-1]이 tmp 보다 큰값인지
@@ -26,13 +34,17 @@ public class QuickSortEx2A {
 
     //퀵 정렬(배열을 나누는 과정을 출력합니다./요소의 개수가 적은 그룹을 먼저 나누기(요소가 9개 이하이면 insertionSort)
     static void quickSort(int[] a, int left, int right) {
-        if(right-left<=9) {
-            insertionSort(a,left, right);
-        }
-        else {
+        if (right - left <= 9) {
+            insertionSort(a, left, right);
+        } else {
             int pl = left; //왼쪽 커서
             int pr = right; //오른쪽 커서
-            int x = a[(pl + pr) / 2]; //피벗
+
+            int idx = sort3(a, left, (left + right) / 2, right); //피벗 정렬한 인덱스
+            swap(a,idx, right-1); //피벗 인덱스와 right-1 인덱스와 swap
+            int x = a[right-1]; //피벗
+            pl++;
+            pr--;
 
             System.out.printf("a[%d]~a[%d]: {", left, right);
             for (int i = left; i < right; i++)
@@ -55,7 +67,7 @@ public class QuickSortEx2A {
                 pr = right;
                 right = temp;
             }
-            //left와 pr과 비교/ right와 pl과 비교
+            //left와 pr과 비교/ right와 pl과 비교 후 재귀 메소드 호출
             if (left < pr) quickSort(a, left, pr);
             if (pl < right) quickSort(a, pl, right);
         }

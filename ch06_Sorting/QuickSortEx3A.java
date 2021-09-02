@@ -2,8 +2,25 @@ package ch06_Sorting;
 
 import java.util.Scanner;
 
-//퀵 정렬(재귀버전, 배열을 나누는 과정을 출력합니다./요소의 개수가 적은 그룹을 먼저 나누기(요소가 9개 이하이면 insertionSort)
-public class QuickSortEx2A {
+//퀵 정렬(재귀버전, 피벗 선택하기 방법 1/요소의 개수가 적은 그룹을 먼저 나누기(요소가 9개 이하이면 insertionSort)
+public class QuickSortEx3A {
+
+    //3개 중에 중앙값을 피벗으로 선택합니다.
+    static int med3(int a, int b, int c){
+        if(a>b){
+            if(b>c){
+                return b;
+            }else{
+                return c;
+            }
+        }else{
+            if(a>c){
+                return a;
+            }else {
+                return c;
+            }
+        }
+    }
     //a[idx1]와 a[idx2]의 값을 바꿉니다.
     static void swap(int[] a, int idx1, int idx2) {
         int t = a[idx1];
@@ -32,7 +49,7 @@ public class QuickSortEx2A {
         else {
             int pl = left; //왼쪽 커서
             int pr = right; //오른쪽 커서
-            int x = a[(pl + pr) / 2]; //피벗
+            int x = med3(a[left],a[(pl + pr) / 2],a[right]); //피벗
 
             System.out.printf("a[%d]~a[%d]: {", left, right);
             for (int i = left; i < right; i++)
@@ -55,7 +72,7 @@ public class QuickSortEx2A {
                 pr = right;
                 right = temp;
             }
-            //left와 pr과 비교/ right와 pl과 비교
+            //left와 pr과 비교/ right와 pl과 비교 후 재귀 메소드 호출
             if (left < pr) quickSort(a, left, pr);
             if (pl < right) quickSort(a, pl, right);
         }

@@ -4,13 +4,20 @@ import ch04_StackAndQueue.IntStack;
 
 import java.util.Scanner;
 
-//퀵 정렬(비재귀 버전, 요소의 개수가 적은 그룹을 먼저 나누기(요소가 9개 이하이면 insertionSort))
-public class QuickSortEx2B {
+public class QuickSortEx4B {
     //a[idx1]와 a[idx2]의 값을 바꿉니다.
     static void swap(int[] a, int idx1, int idx2) {
         int t = a[idx1];
         a[idx1] = a[idx2];
         a[idx2] = t;
+    }
+
+    //a[idx1], a[idx2], a[idx3]의 값을 비교해 중앙값 인덱스 리턴합니다.
+    static int sort3(int[] a, int idx1, int idx2, int idx3) {
+        if (a[idx1] > a[idx2]) swap(a, idx1, idx2);
+        if (a[idx2] > a[idx3]) swap(a, idx2, idx3);
+        if (a[idx1] > a[idx2]) swap(a, idx1, idx2);
+        return idx2;
     }
 
     //단순 삽입 정렬
@@ -28,6 +35,7 @@ public class QuickSortEx2B {
 
     //퀵 정렬(비재귀 버전, 요소의 개수가 적은 그룹을 먼저 나누기(요소가 9개 이하이면 insertionSort))
     static void quickSort(int[] a, int left, int right) {
+
         //스택 생성
         IntStack lstack = new IntStack(right - left + 1); //right-left+1 => 나눌 배열의 요솟수
         IntStack rstack = new IntStack(right - left + 1);
@@ -42,7 +50,12 @@ public class QuickSortEx2B {
             //요솟수가 9개 이하일 경우
             if (right - left <= 9) insertionSort(a, left, right);
             else {
-                int x = a[(left + right) / 2]; //피벗
+                int x; //피벗
+                int idx = sort3(a,pl, (pl+pr)/2, pr);
+                swap(a,idx, right-1);
+                x = a[right-1];
+                pl++;
+                pr--; //??
 
                 do {
                     while (a[pl] < x) pl++;
