@@ -39,7 +39,7 @@ public class BFmatch {
             //일치하는 문자 바로 앞까지의 길이를 구합니다.
             int len =0;
             for(int i=0; i<idx; i++)
-                len+= s1.substring(i,i+1).getBytes().length;
+                len+= s1.substring(i,i+1).getBytes().length;    //패턴 바로 앞까지 공백문자로 출력하기 위해 길이 구하기
             len+= s2.length();
 
             System.out.println((idx+1)+"번쨰 문자부터 일치합니다.");
