@@ -82,16 +82,16 @@ public class LinkedList<E> {
     }
 
     //노드 p를 삭제
-    public void remove(Node p){
-        if(head !=null){    //비어있는 리스트인지 확인
-            if (p==head) //p가 머리 노드면
+    public void remove(Node p) {
+        if (head != null) {    //비어있는 리스트인지 확인
+            if (p == head) //p가 머리 노드면
                 removeFirst();
             else {
                 Node<E> ptr = head;
 
-                while (ptr.next != p){
+                while (ptr.next != p) {
                     ptr = ptr.next;
-                    if (ptr ==null) return;     //p가 리스트에 없습니다.
+                    if (ptr == null) return;     //p가 리스트에 없습니다.
                 }
 
                 ptr.next = p.next;
@@ -99,43 +99,86 @@ public class LinkedList<E> {
             }
         }
     }
-    
+
     //선택 노드를 삭제
-    public void removeCurrentNode(){
+    public void removeCurrentNode() {
         remove(crnt);
     }
 
     //모든 노드를 삭제
-    public void clear(){
-        while (head!=null)  //노드에 아무것도 없을 때까지 머리 노드 삭제
+    public void clear() {
+        while (head != null)  //노드에 아무것도 없을 때까지 머리 노드 삭제
             removeFirst();
-        crnt=null;
+        crnt = null;
     }
-    
+
     //선택 노드를 하나 뒤쪽으로 이동
-    public boolean next(){
-        if(crnt == null || crnt.next == null)
+    public boolean next() {
+        if (crnt == null || crnt.next == null)
             return false;   //이동할 수 없음
         crnt = crnt.next;
         return true;
     }
 
     //선택 노드를 출력
-    public void printCurrentNode(){
+    public void printCurrentNode() {
         if (crnt == null)
             System.out.println("선택한 노드가 없습니다.");
         else
             System.out.println(crnt.data);
     }
-    
+
     //모든 노드를 출력
-    public void dump(){
+    public void dump() {
         Node<E> ptr = head;
 
-        while (ptr != null){
+        while (ptr != null) {
             System.out.println(ptr.data);
             ptr = ptr.next;
         }
+    }
+
+    //서로 같은 노드를 찾아 모두 삭제
+    public void purge(Comparator<? super E> c) {
+        Node<E> ptr = head;
+
+        while (ptr != null) {
+            int count = 0;
+            Node<E> pre = ptr;
+            Node<E> ptr2 = ptr.next;
+
+            while (pre.next != null) {
+
+                if (c.compare(pre.data, ptr2.data) == 0) {      //compare 메소드를 이용하여 같은 값 확인
+                    pre.next = ptr2.next;       //같은 값일 경우 노드 삭제
+                    count++;
+                } else
+                    ptr2 = ptr2.next;       //pre와 ptr2.next값과 비교를 위함
+            }
+            if (count == 0)
+                ptr = ptr.next;
+            else {      //같은 값이 있었던 것을 체크 후 노드 석제
+                Node<E> temp = ptr;
+                remove(ptr);
+                ptr = temp.next;
+            }
+
+        }
+        crnt = head;
+    }
+
+    //머리부터 n개 뒤의 노드에 대한 참조리턴(n이 0이면 head 참조 리턴)
+    public E retrieve(int n) {
+        Node<E> ptr = head;
+
+        while (n > 0 && ptr != null) {
+            if (n-- == 0) {     //n을 1씩 줄이면서 0이 될때까지 체크 후 리턴
+                crnt = ptr;
+                return ptr.data;
+            }
+            ptr=ptr.next;       //다음 노드 주목
+        }
+        return null;
     }
 
 }
