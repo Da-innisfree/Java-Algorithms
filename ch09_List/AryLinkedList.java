@@ -86,18 +86,111 @@ public class AryLinkedList<E> {
         int rec = getInsertIndex();
         if (rec != NULL) {
             head = crnt = rec;      //인덱스 rec인 record에 삽입
-            n[head].set(obj,ptr);
+            n[head].set(obj, ptr);
         }
     }
-    
+
     //꼬리에 노드를 삽입
-    public void addLast(E obj){
+    public void addLast(E obj) {
         if (head == NULL)
             addFirst(obj);      //리스트가 비어 있으면 머리에 삽입
         else {
             int ptr = head;
             while (n[ptr].next != NULL)
                 ptr = n[ptr].next;
+            int rec = getInsertIndex();
+            if (rec != NULL) {        //인덱스 rec인 record에 삽입
+                n[ptr].next = crnt = rec;
+                n[rec].set(obj, NULL);
+            }
         }
     }
+
+    //머리 노드를 삭제
+    public void removeFirst() {
+        if (head != NULL) {       //리스트가 비어 있지 않으면
+            int ptr = n[head].next;
+            deleteIndex(head);
+            head = crnt = ptr;
+        }
+    }
+
+    //꼬리 노드를 삭제
+    public void removeLast() {
+        if (head != NULL) {
+            if (n[head].next == NULL)    //노드가 하나만 있으면 머리 노드를 삭제
+                removeFirst();
+            else {
+                int ptr = head;     //스캔 중인 노드
+                int pre = head;     //스캔 중인 노드의 앞쪽 노드
+
+                while (n[ptr].next != NULL) {
+                    pre = ptr;
+                    ptr = n[ptr].next;
+                }
+                n[pre].next = NULL;   //pre는 삭제 후의 꼬리 노드
+                deleteIndex(ptr);
+                crnt = pre;
+            }
+        }
+    }
+
+    //record p를 삭제
+    public void remove(int p) {
+        if (head != NULL) {
+            if (p == head)    //p가 머리 노드면 머리 노드를 삭제
+                removeFirst();
+            else {
+                int ptr = head;
+
+                while (n[ptr].next != p) {
+                    ptr = n[ptr].next;
+                    if (ptr == NULL) return;     //p가 리스트에 없습니다.
+                }
+                n[ptr].next = NULL;
+                deleteIndex(p);
+                n[ptr].next = n[p].next;
+                crnt = ptr;
+            }
+        }
+    }
+
+    //선택 노드를 삭제
+    public void removeCurrentNode() {
+        remove(crnt);
+    }
+
+    //모든 노드를 삭제
+    public void clear() {
+        while (head != NULL)  //텅 빌 때까지 머리 노드를 삭제
+            removeFirst();
+        crnt = NULL;
+    }
+
+    //선택 노드를 하나 뒤쪽으로 이동
+    public boolean next() {
+        if (crnt == NULL || n[crnt].next == NULL)
+            return false;       //이동할 수 없음
+        crnt = n[crnt].next;
+        return true;
+    }
+
+    //선택 노드를 출력
+    public void printCurentNode() {
+        if (crnt == NULL)
+            System.out.println("선택 노드가 없습니다.");
+        else
+            System.out.println(n[crnt].data);
+    }
+
+    //모든 노드를 출력
+    public void dump() {
+        int ptr = head;
+
+        while (ptr != NULL) {
+            System.out.println(n[ptr].data);
+            ptr = n[ptr].next;
+        }
+    }
+
 }
