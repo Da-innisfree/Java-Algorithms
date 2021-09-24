@@ -2,9 +2,8 @@ package ch09_List;
 
 import java.util.Comparator;
 
-//연결 리스트 클래스(배열 커서 버전)
-public class AryLinkedList<E> {
-
+//연결 리스트 클래스(배열 커서 버전,꼬리 노드 포함)
+public class AryLinkedListT<E> {
     //노드
     class Node<E> {
         private E data;     //데이터
@@ -22,13 +21,14 @@ public class AryLinkedList<E> {
     private int size;       //리스트의 용량(가장 큰 데이터 수)
     private int max;        //사용 중인 꼬리 record
     private int head;       //머리 노드
+    private int tail;       //꼬리 노드
     private int crnt;       //선택 노드
     private int deleted;     //free 리스트의 머리 노드
     private static final int NULL = -1;  //다음 노드 없음/ 리스트가 가득 참
 
     //생성자
-    public AryLinkedList(int capacity) {
-        head = crnt = max = deleted = NULL;
+    public AryLinkedListT(int capacity) {
+        head = tail = crnt = max = deleted = NULL;
 
         try {
             n = new Node[capacity];
@@ -81,40 +81,43 @@ public class AryLinkedList<E> {
     }
 
     //머리에 노드를 삽입
-    public void addFirst(E obj) {
-        int ptr = head;         //삽입 전의 머리 노드
+    public void addFirst(E obj){
+        boolean empty = (tail==NULL);
+        int ptr = head;
         int rec = getInsertIndex();
         if (rec != NULL) {
             head = crnt = rec;      //인덱스 rec인 record에 삽입
             n[head].set(obj, ptr);
         }
+        if (empty)
+            tail =crnt;
     }
-
+    
     //꼬리에 노드를 삽입
-    public void addLast(E obj) {
+    public void addLast(E obj){
         if (head == NULL)
-            addFirst(obj);      //리스트가 비어 있으면 머리에 삽입
+            addFirst(obj);
         else {
-            int ptr = head;
-            while (n[ptr].next != NULL)
-                ptr = n[ptr].next;
             int rec = getInsertIndex();
             if (rec != NULL) {        //인덱스 rec인 record에 삽입
-                n[ptr].next = crnt = rec;
+                n[tail].next = crnt = rec;
                 n[rec].set(obj, NULL);
+                tail = rec;
             }
         }
     }
-
+    
     //머리 노드를 삭제
-    public void removeFirst() {
-        if (head != NULL) {       //리스트가 비어 있지 않으면
+    public void removeFirst(){
+        if (head != NULL){
             int ptr = n[head].next;
             deleteIndex(head);
             head = crnt = ptr;
+            if (head == NULL)   //남은 노드가 없을 경우 체크 
+                tail=NULL;
         }
     }
-
+    
     //꼬리 노드를 삭제
     public void removeLast() {
         if (head != NULL) {
@@ -130,7 +133,7 @@ public class AryLinkedList<E> {
                 }
                 n[pre].next = NULL;   //pre는 삭제 후의 꼬리 노드
                 deleteIndex(ptr);
-                crnt = pre;
+                tail = crnt = pre;
             }
         }
     }
@@ -140,6 +143,8 @@ public class AryLinkedList<E> {
         if (head != NULL) {
             if (p == head)    //p가 머리 노드면 머리 노드를 삭제
                 removeFirst();
+            else if (p==tail)   //p가 꼬리 노드면 꼬리 노드를 삭제
+                removeLast();
             else {
                 int ptr = head;
 
@@ -233,4 +238,5 @@ public class AryLinkedList<E> {
         }
         return null;
     }
+
 }

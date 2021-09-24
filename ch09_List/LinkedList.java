@@ -144,25 +144,24 @@ public class LinkedList<E> {
 
         while (ptr != null) {
             int count = 0;
+            Node<E> ptr2 = ptr;
             Node<E> pre = ptr;
-            Node<E> ptr2 = ptr.next;
 
             while (pre.next != null) {
-
-                if (c.compare(pre.data, ptr2.data) == 0) {      //compare 메소드를 이용하여 같은 값 확인
+                ptr2 = pre.next;
+                if (c.compare(ptr.data, ptr2.data) == 0) {      //compare 메소드를 이용하여 같은 값 확인
                     pre.next = ptr2.next;       //같은 값일 경우 노드 삭제
                     count++;
                 } else
-                    ptr2 = ptr2.next;       //pre와 ptr2.next값과 비교를 위함
+                    pre=ptr2;       //pre값을 pre.next값으로 이동
             }
             if (count == 0)
                 ptr = ptr.next;
-            else {      //같은 값이 있었던 것을 체크 후 노드 석제
+            else {      //같은 값이 있었던 것을 체크 후 노드 삭제
                 Node<E> temp = ptr;
                 remove(ptr);
                 ptr = temp.next;
             }
-
         }
         crnt = head;
     }
@@ -180,5 +179,4 @@ public class LinkedList<E> {
         }
         return null;
     }
-
 }
