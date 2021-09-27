@@ -1,4 +1,4 @@
-package chap03;
+package ch03_Searching;
 
  class Id {
     private  static int counter = 0;

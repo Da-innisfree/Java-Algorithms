@@ -1,5 +1,4 @@
-package chap03;
-
+package ch03_Searching;
 import java.util.Comparator;
 
 public class X {

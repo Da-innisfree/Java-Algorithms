@@ -1,4 +1,4 @@
-package chap03;
+package ch03_Searching;
 
 public class GenericClassTester {
     //제네릭 클래스의 파라미터를 T라고 작성합니다.
