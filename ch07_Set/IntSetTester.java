@@ -14,13 +14,26 @@ public class IntSetTester {
 
         s1.copyTo(s2);
         s2.add(12);
-        s2.remove(25);
+        s2.add(11);
+        s2.add(110);
+        s2.add(111);
 
         s3.copyFrom(s2);
 
         System.out.println("s1= "+s1);
         System.out.println("s2= "+s2);
         System.out.println("s3= "+s3);
+
+        s1.addAll(s2);
+        System.out.println("s1= "+s1);
+        System.out.println("s2= "+s2);
+        System.out.println("s3= "+s3);
+
+        s1.intersectionOf(s2,s3);
+        System.out.println("s1= "+s1);
+        System.out.println("s2= "+s2);
+        System.out.println("s3= "+s3);
+
 
 
     }

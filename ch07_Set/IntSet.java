@@ -128,11 +128,12 @@ public class IntSet {
 
     //집합 s의 모든 요소를 추가합니다.
     public boolean addAll(IntSet s) {
-        if (max < num + s.num)  //max값이 num+s.num보다 작은지 비교
-            return false;   //모든 요소 추가 불가
+        boolean flag = false;
         for (int i = 0; i < s.num; i++)
-            add(s.set[i]);
-        return true;
+            if(add(s.set[i]) ==true)
+                flag=true;
+            else flag=false;
+        return flag;
     }
 
     //집합 s에 들어있는 요소를 제외하고 삭제합니다.
@@ -185,14 +186,22 @@ public class IntSet {
         else return isSubsetOf(s);
     }
 
-    //s1,s2의 교집합을 복사합니다.
-    public void intersectionOf(IntSet s1, IntSet s2){
-
+    // 집합 s1과 s2의 교집합을 복사
+    public void intersectionOf(IntSet s1, IntSet s2) {
+        clear();
+        for (int i = 0; i < s1.num; i++)
+            if (s2.contains(s1.set[i]))
+                add(s1.set[i]);
     }
 
-    //s1,s2의 차집합을 복사합니다.
+    // 집합 s1과 s2의 차집합을 복사
+    public void differenceOf(IntSet s1, IntSet s2) {
+        clear();
+        for (int i = 0; i < s1.num; i++)
+            if (!s2.contains(s1.set[i]))
+                add(s1.set[i]);
+    }
+
 
 
 }
-
-
